@@ -19,3 +19,29 @@ start_markup.add(
     share_location,
     share_contact
 )
+
+cancel_markup = ReplyKeyboardMarkup(
+    resize_keyboard=True,
+    one_time_keyboard=True
+).add(
+    KeyboardButton("ОТМЕНА"),
+)
+
+gender_markup = ReplyKeyboardMarkup(
+    resize_keyboard=True,
+    one_time_keyboard=True
+).add(
+    KeyboardButton("ЖЕНСКИЙ"),
+    KeyboardButton("МУЖСКОЙ"),
+    KeyboardButton("НЕЗНАЮ"),
+    KeyboardButton("ОТМЕНА"),
+)
+
+submit_markup = ReplyKeyboardMarkup(
+    resize_keyboard=True,
+    one_time_keyboard=True
+).add(
+    KeyboardButton("ДА"),
+    KeyboardButton("ЗАНОВО"),
+    KeyboardButton("ОТМЕНА"),
+)

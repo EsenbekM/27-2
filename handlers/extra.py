@@ -1,5 +1,8 @@
 from aiogram import types, Dispatcher
-from config import bot
+from config import bot, OPENAI_TOKEN
+import openai
+
+openai.api_key = OPENAI_TOKEN
 
 
 # @dp.message_handler()
@@ -22,6 +25,18 @@ async def filter_bad_words(message: types.Message):
         a = await bot.send_dice(message.chat.id)
         # print(a.dice.value)
         # await message.answer_dice(emoji="🎳")
+
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=message.text,
+        temperature=0.9,
+        max_tokens=1000,
+        top_p=1,
+        frequency_penalty=0.0,
+        presence_penalty=0.6,
+        stop=[" Human:", " AI:"]
+    )
+    await message.answer(response['choices'][0]["text"])
 
 
 def register_hadlers_client(dp: Dispatcher):
