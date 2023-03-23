@@ -42,3 +42,7 @@ async def sql_command_all():
 async def sql_command_delete(id):
     cursor.execute("DELETE FROM anketa WHERE id = ?", (id,))
     db.commit()
+
+
+async def sql_command_get_id_name():
+    return cursor.execute("SELECT id, name FROM anketa").fetchall()
