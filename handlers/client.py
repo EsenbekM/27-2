@@ -1,8 +1,9 @@
 from aiogram import types, Dispatcher
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from config import bot, dp
 from keyboards.client_kb import start_markup
 from database.bot_db import sql_command_random
+from parser.movies import parser
 
 
 # @dp.message_handler(commands=['start'])
@@ -60,8 +61,29 @@ async def get_random_user(message: types.Message):
     )
 
 
+async def get_movies(message: types.Message):
+    movies = parser()
+    count = int(message.text.split()[1]) if len(message.text.split()) > 1 else 10
+    for movie in movies:
+        if count == 0:
+            break
+        await message.answer(
+            f"<a href='{movie['url']}'>{movie['title']}</a>\n"
+            f"<b>{movie['content']}</b>\n"
+            f"#Y{movie['year']}\n"
+            f"#{movie['country']}\n"
+            f"#{movie['genre']}\n",
+            reply_markup=InlineKeyboardMarkup().add(
+                InlineKeyboardButton("СМОТРЕТЬ!👻", url=movie['url'])
+            ),
+            parse_mode=ParseMode.HTML
+        )
+        count -= 1
+
+
 def register_hadlers_client(dp: Dispatcher):
     dp.register_message_handler(start_command, commands=['start'])
     dp.register_message_handler(help_command, commands=['help'])
     dp.register_message_handler(quiz_1, commands=['quiz'])
     dp.register_message_handler(get_random_user, commands=['get'])
+    dp.register_message_handler(get_movies, commands=['movies'])
